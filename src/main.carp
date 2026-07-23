@@ -1,0 +1,22 @@
+(load "pq/pq.carp")
+(use PQ.Raw)
+
+(defn main []
+  (let-do [
+    conn (PQconnectdb-c @"postgresql://postgres@localhost:5432/postgres")  
+    status (PQstatus-c conn)
+    res (PQexec-c conn @"SELECT NULL;")
+  ]
+    (if (= status 0)
+      (do
+        (IO.println &(str (PQntuples-c res)))
+        (PQclear-c res)
+        (PQfinish-c conn)
+        (IO.println "Done")
+      )
+      (do
+        (IO.println &(PQerrorMessage-c conn))
+      )
+    )
+  )
+)

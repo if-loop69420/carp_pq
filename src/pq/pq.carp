@@ -1,0 +1,28 @@
+(load "raw/raw.carp")
+  
+(defmodule PQ
+
+  (deftype ConnStatus 
+    ConnectionOk
+    ConnectionBad
+    ConnectionStarted
+    ConnectionMade
+    ConnectionAwaitingResponse
+    ConnectionAuthOk
+    ConnectionSetEnv
+    ConnectionSslStartup
+  	ConnectionNeeded
+  	ConnectionCheckWritable
+  	ConnectionConsume
+  	ConnectionGssStartup
+  	ConnectionCheckTarget
+  	ConnectionCheckStandby
+  )
+
+  (deftype PgConn
+    [
+      conn (Ptr PQ.Raw.PGconn),
+      status PQ.ConnStatus,
+    ]
+  )
+)

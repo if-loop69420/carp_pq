@@ -1,0 +1,57 @@
+(defmodule PQ
+(defmodule Raw
+  (system-include "libpq-fe.h")
+  ;; typedefs
+  (register-type PGconn "PGconn")
+  (register-type PGresult "PGresult")
+  (register-type
+    PQconninfoOption
+    "PQconninfoOption"
+    [
+      keyword String
+      ,envvar String
+      ,compiled String
+      ,val String
+      ,label String
+      ,dispchar String
+      ,dispsize Int
+    ]
+  )
+  (register-type ExecStatusType "ExecStatusType")
+  
+  ;; async 
+  (register PQconnectStart-c (Fn [String] (Ptr PGconn)) "PQconnectStart")
+
+  ;; sync (conn)
+  (register PQconnectdb-c (Fn [String] (Ptr PGconn)) "PQconnectdb")
+  (register PQfinish-c (Fn [(Ptr PGconn)] ()) "PQfinish")
+  (register PQstatus-c (Fn [(Ptr PGconn)] Int) "PQstatus")
+  (register PQerrorMessage-c (Fn [(Ptr PGconn)] String) "PQerrorMessage")
+  (register PQconninfo-c (Fn [(Ptr PGconn)] (Ptr PQconninfoOption)) "PQconninfo")
+  (register PQconninfoFree-c (Fn [(Ptr PQconninfoOption)] ()) "PQconninfoFree")
+  (register PQreset-c (Fn [(Ptr PGconn)] ()) "PQreset")
+  (register PQcancel-c (Fn [(Ptr PGconn)] ()) "PQcancel")
+  (register PQdb-c (Fn [(Ptr PGconn)] String) "PQdb")
+  (register PQuser-c (Fn [(Ptr PGconn)] String) "PQuser")
+  (register PQpass-c (Fn [(Ptr PGconn)] String) "PQpass")
+  (register PQhost-c (Fn [(Ptr PGconn)] String) "PQhost")
+  (register PQhostaddr-c (Fn [(Ptr PGconn)] String) "PQhostaddr")
+  (register PQport-c (Fn [(Ptr PGconn)] String) "PQport")
+  (register PQtty-c (Fn [(Ptr PGconn)] String) "PQtty")
+  (register PQoptions-c (Fn [(Ptr PGconn)] String) "PQoptions")
+
+  ;; sync (query)
+  (register PQexec-c (Fn [(Ptr PGconn) String] (Ptr PGresult)) "PQexec")
+  (register PQclear-c (Fn [(Ptr PGresult)] ()) "PQclear")
+  (register PQresultStatus-c (Fn [(Ptr PGresult)] Int) "PQresultStatus")
+  (register PQresultErrorMessage-c (Fn [(Ptr PGresult)] String) "PQresultErrorMessage")
+  (register PQresStatus-c (Fn [ExecStatusType] String) "PQresStatus")
+
+  ;; sync (query res)
+  (register PQntuples-c (Fn [(Ptr PGresult)] Int) "PQntuples")
+  (register PQnfields-c (Fn [(Ptr PGresult)] Int) "PQnfields")
+  (register PQgetValue-c (Fn [(Ptr PGresult) Int Int] String) "PQgetValue")
+  (register PQgetlength-c (Fn [(Ptr PGresult) Int Int] Int) "PQgetlength")
+  (register PQgetisnull-c (Fn [(Ptr PGresult) Int Int] Int) "PQgetisnull")
+)
+)

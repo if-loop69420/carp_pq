@@ -1,0 +1,13 @@
+(Project.config "compiler" "clang")
+(Project.config "title" "integrate_libpq")
+(Project.config "output-directory" "build")
+(Project.config "search-path" "src")
+
+(load "main.carp")
+
+(add-cflag "-O3")
+(add-pkg "libpq")
+
+(build)
+
+(quit)
